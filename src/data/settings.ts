@@ -1,8 +1,8 @@
 import { SettingsData } from "./types";
 
 export const settings: SettingsData = {
-  "site_title": "Suburbia Skateboards",
-  "meta_description": "The best skateboards",
+  "site_title": "YOMI Estudios",
+  "meta_description": "Narrativas, juegos, cómics y experiencias de YOMI Estudios.",
   "fallback_og_image": {
     "dimensions": {
       "width": 1200,

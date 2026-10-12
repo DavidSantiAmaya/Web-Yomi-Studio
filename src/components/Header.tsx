@@ -1,36 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
-import { ButtonLink } from "./ButtonLink";
 import { Logo } from "./Logo";
-import { settings } from "@/data/settings";
+import { useStore } from "./store/StoreProvider";
 
 export function Header() {
-
-  return (
-    <header className="header absolute left-0 right-0 top-0 z-50 ~h-32/48 ~px-4/6 ~py-4/6 hd:h-32">
-      <div className="mx-auto grid w-full max-w-6xl grid-cols-[auto,auto] items-center gap-6 md:grid-cols-[1fr,auto,1fr]">
-        <Link href="/" className="justify-self-start">
-          <Logo className="text-brand-purple ~h-12/20" />
-        </Link>
-        <nav
-          aria-label="Main"
-          className="col-span-full row-start-2 md:col-span-1 md:col-start-2 md:row-start-1"
-        >
-          <ul className="flex flex-wrap items-center justify-center gap-8">
-            {settings.navigation.map((item: import("../data/types").SettingsNavigationItem) => (
-              <li key={item.link.text}>
-                <Link href={item.link.url || "/"} className="~text-lg/xl">{item.link.text}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="justify-self-end">
-          <ButtonLink href="" icon="cart" color="purple" aria-label="Cart (1)">
-            <span className="md:hidden">1</span>
-            <span className="hidden md:inline">Cart (1)</span>
-          </ButtonLink>
-        </div>
-      </div>
-    </header>
-  );
+  const { items } = useStore();
+  const count = items.reduce((total, item) => total + item.quantity, 0);
+  return <header className="sticky top-0 z-50 border-b-2 border-black bg-[#f6f5f1]/95 backdrop-blur">
+    <div className="mx-auto flex min-h-20 max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
+      <Link href="/" aria-label="Inicio YOMI"><Logo /></Link>
+      <nav aria-label="Principal" className="hidden gap-5 text-sm font-bold uppercase sm:flex"><Link className="hover:underline" href="/catalogo">Catálogo</Link><Link className="hover:underline" href="/#manifiesto">Estudio</Link></nav>
+      <Link href="/carrito" className="border-2 border-black bg-black px-3 py-2 text-xs font-bold uppercase text-white hover:bg-lime-300 hover:text-black">Carrito <span aria-label={`${count} artículos`}>({count})</span></Link>
+    </div>
+  </header>;
 }

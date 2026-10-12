@@ -1,0 +1,17 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { CartSummary, OrderLines } from "@/components/store/CartSummary";
+import { useStore } from "@/components/store/StoreProvider";
+
+export default function PaymentPage() {
+  const { items, customer, completeOrder, ready } = useStore();
+  const [status, setStatus] = useState<"idle" | "processing" | "error">("idle");
+  const router = useRouter();
+  if (!ready) return <main className="mx-auto max-w-6xl px-5 py-16 sm:px-8">Cargando pago…</main>;
+  if (!items.length || !customer.email) return <main className="mx-auto max-w-6xl px-5 py-16 sm:px-8"><h1 className="font-sans text-4xl uppercase">Primero prepara tu pedido.</h1><Link className="mt-5 inline-flex border-2 border-black px-4 py-3 font-bold uppercase" href="/checkout">Volver al checkout</Link></main>;
+  function confirm(success: boolean) { if (!success) { setStatus("error"); return; } setStatus("processing"); window.setTimeout(() => { completeOrder(); router.push("/confirmacion"); }, 700); }
+  return <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16"><p className="text-xs font-bold uppercase tracking-[.2em]">Pago / 2 de 2</p><h1 className="mt-3 font-sans text-5xl uppercase tracking-[-.06em] sm:text-7xl">Confirmar demo</h1><div className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]"><div><div className="border-2 border-black bg-white p-6"><h2 className="font-sans text-2xl uppercase">Pago de demostración</h2><p className="mt-3 text-sm leading-relaxed">No hay pasarela bancaria conectada. No ingreses números de tarjeta ni datos financieros: los botones siguientes sólo prueban los estados del flujo.</p><p className="mt-5 text-sm"><strong>Método:</strong> pago simulado</p>{status === "error" && <p role="alert" className="mt-5 border-2 border-black bg-zinc-200 p-3 text-sm">La simulación devolvió un error controlado. Tu carrito sigue intacto.</p>}<div className="mt-6 flex flex-wrap gap-3"><button disabled={status === "processing"} onClick={() => confirm(true)} className="min-h-12 border-2 border-black bg-lime-300 px-5 text-sm font-bold uppercase hover:bg-black hover:text-white disabled:opacity-60">{status === "processing" ? "Procesando…" : "Simular pago exitoso"}</button><button disabled={status === "processing"} onClick={() => confirm(false)} className="min-h-12 border-2 border-black px-5 text-sm font-bold uppercase hover:bg-zinc-200">Probar error</button></div><Link href="/checkout" className="mt-6 inline-block text-sm font-bold uppercase underline">← Corregir datos</Link></div></div><aside className="space-y-4"><OrderLines items={items} /><CartSummary items={items} /></aside></div></section>;
+}

@@ -1,0 +1,15 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+import { Product } from "@/data/products";
+import { formatMoney } from "@/lib/money";
+import { AddToCart } from "./AddToCart";
+import { ProductArtwork } from "./ProductArtwork";
+
+export function ProductDetail({ product }: { product: Product }) {
+  const [variantId, setVariantId] = useState(product.variants[0].id);
+  const [quantity, setQuantity] = useState(1);
+  const variant = product.variants.find((item) => item.id === variantId) ?? product.variants[0];
+  return <section className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-16"><Link href="/catalogo" className="text-sm font-bold uppercase underline">← Catálogo</Link><div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-16"><ProductArtwork product={product} className="aspect-[4/5]" /><div><p className="text-xs font-bold uppercase tracking-[.2em]">{product.category} / {product.kind === "digital" ? "Digital" : "Edición física"}</p><h1 className="mt-3 font-sans text-5xl uppercase leading-[.82] tracking-[-.06em] sm:text-7xl">{product.name}</h1><p className="mt-6 max-w-xl text-lg leading-relaxed">{product.description}</p><p className="mt-7 text-2xl font-bold">{formatMoney(variant.price)}</p><fieldset className="mt-8"><legend className="mb-3 text-sm font-bold uppercase">Formato</legend><div className="flex flex-wrap gap-2">{product.variants.map((item) => <button key={item.id} type="button" onClick={() => setVariantId(item.id)} className={`border-2 border-black px-4 py-3 text-sm font-bold ${item.id === variantId ? "bg-black text-white" : "bg-white hover:bg-lime-300"}`}>{item.label}</button>)}</div></fieldset><div className="mt-6 flex flex-wrap items-center gap-3"><label className="flex items-center gap-3 text-sm font-bold uppercase">Cantidad <input aria-label="Cantidad" type="number" min="1" max="10" value={quantity} onChange={(event) => setQuantity(Math.max(1, Math.min(10, Number(event.target.value) || 1)))} className="w-16 border-2 border-black bg-white px-2 py-2 text-center" /></label><AddToCart productId={product.id} variantId={variantId} quantity={quantity} disabled={!product.available} /></div><p className="mt-4 text-sm font-bold uppercase">{product.available ? "Disponible para la demostración" : "No disponible actualmente"}</p><div className="mt-10 border-t-2 border-black pt-5"><h2 className="font-sans text-2xl uppercase">En el paquete</h2><ul className="mt-3 space-y-2 text-sm">{product.details.map((detail) => <li key={detail}>— {detail}</li>)}</ul></div></div></div></section>;
+}

@@ -1,31 +1,19 @@
 import type { Metadata } from "next";
-import { Bowlby_One_SC, DM_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
-import "../app/globals.css";
+// @ts-expect-error Next.js handles global CSS imports at build time.
+import "./globals.css";
 import { SVGFilters } from "@/components/SVGFilters";
 import { settings } from "@/data/settings";
+import { StoreProvider } from "@/components/store/StoreProvider";
 
-const bowlby = Bowlby_One_SC({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-bowlby-sc",
-  weight: "400",
-});
-
-const dmMono = DM_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-dm-mono",
-  weight: "500",
-});
+const geist = localFont({ src: "./fonts/GeistVF.woff", variable: "--font-geist" });
+const geistMono = localFont({ src: "./fonts/GeistMonoVF.woff", variable: "--font-geist-mono" });
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: settings.site_title,
     description: settings.meta_description,
-    openGraph: {
-      images: settings.fallback_og_image.url ?? undefined,
-    },
   };
 }
 
@@ -35,11 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
-        className={`${bowlby.variable} ${dmMono.variable} antialiased font-mono font-medium text-zinc-800`}
+        className={`${geist.variable} ${geistMono.variable} bg-[#f6f5f1] antialiased font-mono text-zinc-950`}
       >
-        <main>{children}</main>
+        <StoreProvider><main>{children}</main></StoreProvider>
         <SVGFilters />
       </body>
     </html>

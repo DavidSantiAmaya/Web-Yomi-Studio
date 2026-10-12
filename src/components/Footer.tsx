@@ -1,42 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-
-import { settings } from "@/data/settings";
-import { Logo } from "@/components/Logo";
-import { Bounded } from "./Bounded";
-import { FooterPhysics } from "./FooterPhysics";
+import { Logo } from "./Logo";
 
 export function Footer() {
-  const boardTextureURLs = settings.footer_skateboards
-    .map((item: { skateboard: { url: string } }) => item.skateboard.url)
-    .filter((url: string | undefined): url is string => Boolean(url));
-
-  return (
-    <footer className="bg-texture bg-zinc-900 text-white overflow-hidden">
-      <div className="relative h-[75vh] ~p-10/16 md:aspect-auto">
-        <Image
-          src={settings.footer_image.url}
-          alt=""
-          fill
-          className="object-cover"
-        />
-        <FooterPhysics
-          boardTextureURLs={boardTextureURLs}
-          className="absolute inset-0 overflow-hidden"
-        />
-        <Logo className="pointer-events-none relative h-20 mix-blend-exclusion md:h-28" />
-      </div>
-      <Bounded as="nav">
-        <ul className="flex flex-wrap justify-center gap-8 ~text-lg/xl">
-          {settings.navigation.map((item: import("../data/types").SettingsNavigationItem) => (
-            <li key={item.link.text} className="hover:underline">
-              <Link href={item.link.url || "/"}>{item.link.text}</Link>
-            </li>
-          ))}
-        </ul>
-      </Bounded>
-      {/* List of links */}
-    </footer>
-  );
+  return <footer className="border-t-2 border-black bg-black text-white"><div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:grid-cols-[1fr_auto] sm:px-8"><div><Logo className="text-lime-300" /><p className="mt-4 max-w-md text-sm leading-relaxed text-zinc-300">Narrativas, juegos, cómics y experiencias en desarrollo. Este catálogo usa datos de demostración sustituibles mientras se integra el inventario definitivo.</p></div><nav aria-label="Pie de página" className="flex flex-wrap content-start gap-x-6 gap-y-3 text-sm font-bold uppercase"><Link href="/catalogo">Catálogo</Link><Link href="/carrito">Carrito</Link><Link href="/">Inicio</Link></nav></div></footer>;
 }

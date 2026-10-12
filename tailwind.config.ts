@@ -24,8 +24,8 @@ export default {
     fontSize,
     extend: {
       fontFamily: {
-        sans: ["var(--font-bowlby-sc)"],
-        mono: ["var(--font-dm-mono)"],
+        sans: ["var(--font-geist)"],
+        mono: ["var(--font-geist-mono)"],
       },
       colors: {
         "brand-blue": "#4876ff",
