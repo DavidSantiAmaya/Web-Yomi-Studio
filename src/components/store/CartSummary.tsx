@@ -1,26 +1,6 @@
 "use client";
-
 import { calculateTotals, CartItem } from "./StoreProvider";
 import { getProduct, getVariant } from "@/data/products";
 import { formatMoney } from "@/lib/money";
-
-export function CartSummary({ items, showShippingNote = true }: { items: CartItem[]; showShippingNote?: boolean }) {
-  const { subtotal, shipping, total } = calculateTotals(items);
-  return <div className="space-y-3 border-2 border-black bg-white p-5 text-sm">
-    <div className="flex justify-between"><span>Subtotal</span><span>{formatMoney(subtotal)}</span></div>
-    <div className="flex justify-between"><span>Envío</span><span>{shipping ? formatMoney(shipping) : "—"}</span></div>
-    <div className="border-t-2 border-black pt-3 text-lg font-bold"><div className="flex justify-between"><span>Total</span><span>{formatMoney(total)}</span></div></div>
-    {showShippingNote && <p className="text-xs text-zinc-600">El envío se aplica una sola vez si el pedido incluye una edición física.</p>}
-  </div>;
-}
-
-export function OrderLines({ items }: { items: CartItem[] }) {
-  return <ul className="divide-y-2 divide-black border-y-2 border-black">
-    {items.map((item) => {
-      const product = getProduct(item.productId);
-      if (!product) return null;
-      const variant = getVariant(product, item.variantId);
-      return <li key={`${item.productId}-${item.variantId}`} className="flex justify-between gap-4 py-3 text-sm"><span>{product.name} <span className="text-zinc-600">/ {variant.label} × {item.quantity}</span></span><strong>{formatMoney(variant.price * item.quantity)}</strong></li>;
-    })}
-  </ul>;
-}
+export function CartSummary({ items, showShippingNote = true }: { items: CartItem[]; showShippingNote?: boolean }) { const { subtotal, shipping, total } = calculateTotals(items); return <div className="space-y-3 border-2 border-black bg-white p-5 text-sm"><div className="flex justify-between"><span>Subtotal</span><span>{formatMoney(subtotal)}</span></div><div className="flex justify-between"><span>Envío</span><span>{shipping ? formatMoney(shipping) : "—"}</span></div><div className="border-t-2 border-black pt-3 text-lg font-bold"><div className="flex justify-between"><span>Total</span><span>{formatMoney(total)}</span></div></div>{showShippingNote && <p className="text-xs text-zinc-600">El envío se aplica una sola vez si el pedido incluye una edición física.</p>}</div>; }
+export function OrderLines({ items }: { items: CartItem[] }) { return <ul className="divide-y-2 divide-black border-y-2 border-black">{items.map((item) => { const product = getProduct(item.productId); if (!product) return null; const variant = getVariant(product, item.variantId); return <li key={`${item.productId}-${item.variantId}`} className="flex justify-between gap-4 py-3 text-sm"><span>{product.name} <span className="text-zinc-600">/ {variant.label} × {item.quantity}</span></span><strong>{formatMoney(variant.price * item.quantity)}</strong></li>; })}</ul>; }

@@ -1,19 +1,7 @@
 "use client";
-
 import Link from "next/link";
 import { Product } from "@/data/products";
 import { formatMoney } from "@/lib/money";
 import { AddToCart } from "./AddToCart";
 import { ProductArtwork } from "./ProductArtwork";
-
-export function ProductCard({ product }: { product: Product }) {
-  const from = Math.min(...product.variants.map((variant) => variant.price));
-  return <article className="group flex flex-col border-2 border-black bg-white">
-    <Link href={`/producto/${product.slug}`} className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-lime-300"><ProductArtwork product={product} className="aspect-[4/5] transition-transform duration-300 group-hover:scale-[.98]" /></Link>
-    <div className="flex flex-1 flex-col gap-3 p-4">
-      <div className="flex items-start justify-between gap-3"><div><p className="text-xs uppercase tracking-[.16em] text-zinc-600">{product.category}</p><h2 className="font-sans text-2xl uppercase leading-none">{product.name}</h2></div><span className="whitespace-nowrap text-sm font-bold">{formatMoney(from)}</span></div>
-      <p className="text-sm leading-relaxed">{product.description}</p>
-      <div className="mt-auto flex flex-wrap gap-2"><Link href={`/producto/${product.slug}`} className="inline-flex min-h-11 items-center border-2 border-black px-4 text-sm font-bold uppercase hover:bg-black hover:text-white">Ver ficha</Link><AddToCart productId={product.id} variantId={product.variants[0].id} disabled={!product.available} compact /></div>
-    </div>
-  </article>;
-}
+export function ProductCard({ product }: { product: Product }) { const from = Math.min(...product.variants.map((variant) => variant.price)); return <article className="group flex flex-col border-2 border-black bg-white"><Link href={`/producto/${product.slug}`} className="block focus:outline-none focus-visible:ring-4 focus-visible:ring-zinc-500"><ProductArtwork product={product} className="aspect-[4/5] transition-transform duration-300 group-hover:scale-[.98]" /></Link><div className="flex flex-1 flex-col gap-3 p-4"><div className="flex items-start justify-between gap-3"><div><p className="text-xs uppercase tracking-[.16em] text-zinc-600">{product.category}</p><h2 className="font-sans text-2xl uppercase leading-none">{product.name}</h2></div><span className="whitespace-nowrap text-sm font-bold">{formatMoney(from)}</span></div><p className="text-sm leading-relaxed">{product.description}</p><div className="mt-auto flex flex-wrap gap-2"><Link href={`/producto/${product.slug}`} className="inline-flex min-h-11 items-center border-2 border-black px-4 text-sm font-bold uppercase hover:bg-black hover:text-white">Ver ficha</Link><AddToCart productId={product.id} variantId={product.variants[0].id} disabled={!product.available} compact /></div></div></article>; }
